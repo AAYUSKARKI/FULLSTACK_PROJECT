@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
-const userschema = new schema(
+const userschema = new Schema(
     {
         username: {
             type: String,
@@ -40,7 +40,7 @@ const userschema = new schema(
             }
         ],
         password: {
-            type: string,
+            type: String,
             required: [true, 'Password is required']
         },
         refreshtoken: {

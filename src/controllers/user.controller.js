@@ -23,7 +23,7 @@ if ([fullname,email,username,password].some((field)=>field?.trim() ==="")){
 throw new Apierror(400,"All fields are required")
 }
 
- const existeduser = User.findOne({
+ const existeduser = await User.findOne({
     $or: [
         {username}, {email}
     ]
@@ -34,7 +34,7 @@ if(existeduser)
 
 const avatarlocalpath = req.files?.avatar[0]?.path
 const coverImagelocalpath = req.files?.coverImage[0]?.path
-
+console.log("Avatar file received:", req.files?.avatar);
 if(!avatarlocalpath){
     throw new Apierror(400,"Avatar file is required")
 }
@@ -42,7 +42,7 @@ const avatar = await uploadOnCloudinary(avatarlocalpath)
 const coverImage = await uploadOnCloudinary(coverImagelocalpath)
 
 if(!avatar){
-    throw new Apierror(400,"Avatar file is required")
+    throw new Apierror(400,"Avatar file not uploaded")
 }
 const user= await User.create({
     fullname,
