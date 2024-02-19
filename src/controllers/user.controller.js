@@ -169,7 +169,7 @@ const logoutuser=asynchandler(async(req,res)=>{
 const refreshaccesstoken= asynchandler(async(req,res)=>{
    const incomingRefreshToken =  req.cookies.refreshtoken || req.body.refreshtoken
 
-   if(incomingRefreshToken){
+   if(!incomingRefreshToken){
    throw new Apierror(401,"unauthorized access")
 }
 
