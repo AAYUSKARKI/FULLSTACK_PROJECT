@@ -255,7 +255,61 @@ $set:{
 
 
 const updateuseravatar = asynchandler(async (req,res)=>{
-    
+    const avatarlocalpath = req.files?.path
+
+    if(!avatarlocalpath){
+        throw new Apierror(400,"Avatar fiole is missing ")
+    }
+
+    const avatar = await uploadOnCloudinary(avatarlocalpath)
+
+    if(!avatar.url){
+        throw new Apierror(400,"error while upload on avatar ")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        
+        {
+            $set:{
+                avatar : avatar.url
+            }
+        },
+        {new:true}
+        ).select(-"password")
+
+        return res
+        .status(200)
+        .json(new Apiresponse(200,user,"avatar updated successfully"))
 })
 
-export {registerUser, loginuser , logoutuser, refreshaccesstoken, changecurrentpassword, getcurrentuser, updateaccountdetails}
+const updateusercoverimage = asynchandler(async (req,res)=>{
+    const coverImagelocalpath= req.file?.path
+
+    if(!coverImagelocalpath){
+        throw new Apierror(400,"cover image fiole is missing ")
+    }
+
+    const coverImage = await uploadOnCloudinary(coverImagelocalpath)
+
+    if(!coverImage.url){
+        throw new Apierror(400,"error while upload on coverimage ")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        
+        {
+            $set:{
+                coverimage : coverImage.url
+            }
+        },
+        {new:true}).select(-"password")
+
+        return res
+        .status(200)
+        .json(new Apiresponse(200,user,"coverimageupdatedsuccessfully"))
+})
+
+export {registerUser, loginuser , logoutuser, refreshaccesstoken, changecurrentpassword, 
+    getcurrentuser, updateaccountdetails,updateuseravatar , updateusercoverimage}
