@@ -3,7 +3,7 @@ import { Apierror } from "../utils/apierror.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Apiresponse } from "../utils/apiresponse.js";
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 
@@ -149,8 +149,8 @@ const logoutuser = asynchandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshtoken: undefined
+            $unset: {
+                refreshtoken: 1
             }
         },
         {
@@ -408,7 +408,7 @@ const getwatchhistory = asynchandler(async (req, res) => {
                             as: "Owner",
                             pipeline: [
                                 {
-                                    project: {
+                                    $project: {
                                         fullname: 1,
                                         username: 1,
                                         avatar: 1
