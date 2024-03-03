@@ -228,14 +228,14 @@ const changecurrentpassword = asynchandler(async (req, res) => {
 })
 
 
-const getcurrentuser = asynchandler(async () => {
+const getcurrentuser = asynchandler(async () => {   
     return res.status(200).json(new Apiresponse(200, req.user, "current user fetched successfully"))
 })
 
 const updateaccountdetails = asynchandler(async (req, res) => {
     const { fullname, email } = req.body
 
-    if (!fullnamen || !email) {
+    if (!fullname || !email) {
         return Apierror(400, "all fields are required ")
     }
 
